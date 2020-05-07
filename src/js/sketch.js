@@ -8,6 +8,9 @@
 let spirals = [];
 let sounds = [];
 let ready = true;
+let mouseActive = false;
+let mouseValue = 0;
+let mouseMax = 30;
 
 function setup() {
   getAudioContext().suspend();
@@ -31,13 +34,23 @@ function draw() {
 
   push();
   ellipseMode(CENTER);
-  fill(255, 255, 255, 30);
   translate(-windowWidth / 2, -(windowHeight / 2));
   rotate(0);
- 
+  fill(255, 255, 255, mouseValue);
   ellipse(mouseX, mouseY, 30);
- 
+  if (mouseActive) {
+    if (mouseValue < 70) {
+      mouseValue += 1;
+    }
+    
+  } else {
+    if (mouseValue > 0) {
+      mouseValue -= 1;
+    }
+  }
+
   pop();
+  
 }
 
 function mousePressed() {
@@ -73,8 +86,21 @@ function mousePressed() {
     }, round(random(1000, 5000)));
     setTimeout(function() {
       ready = true;
-    }, 400);
+    }, 100);
   } 
 
   
+}
+
+function mouseMoved() {
+  let tempX = mouseX;
+  let tempY = mouseY;
+  mouseActive = true;
+
+  setTimeout(function() {
+    if(tempX == mouseX && tempY == mouseY) {
+      mouseActive = false;
+    }
+    
+  }, 500);
 }
